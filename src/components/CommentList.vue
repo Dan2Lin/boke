@@ -1,7 +1,7 @@
 <template>
     <div>
       <div id="comment-list" class="comment-list">
-        <comment-box></comment-box>
+        <comment-box :article-id = articleId></comment-box>
         <div id="normal-comment-list" class="normal-comment-list">
           <div>
             <div>
@@ -17,7 +17,6 @@
 
 <script>
 import CommentBox from './CommentBox'
-// import someComponent from './someComponent'
 export default {
   components: {CommentBox},
   name: 'CommentList',
@@ -26,6 +25,7 @@ export default {
       msg: 'Hello Vue.js'
     }
   },
+  props: ['articleId'],
   component: {
     // someComponent
   }

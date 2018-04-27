@@ -1,10 +1,10 @@
 <template>
   <div class="comment-box-form">
     <form class="new-comment">
-      <input type="text" class="comment-name" placeholder="你的名称（必填）"/>
-      <textarea placeholder="写下你的神评论..."></textarea>
+      <input type="text" class="comment-name" v-model="username" placeholder="你的名称（必填）"/>
+      <textarea placeholder="写下你的神评论..." v-model= "content"></textarea>
       <div class="write-function-block">
-        <a class="btn btn-send">发送</a>
+        <a class="btn btn-send" v-on:click ="addComment">发送</a>
         <a class="cancel">取消</a>
       </div>
     </form>
@@ -16,9 +16,38 @@ export default {
   name: 'CommentBox',
   data () {
     return {
+      username: '',
+      content: ''
     }
   },
   component: {
+  },
+  mounted () {
+  },
+  props: ['articleId'],
+  methods: {
+    addComment: function () {
+      var param = {
+        aid: this.articleId,
+        cid: '11112',
+        parent_id: null,
+        name: this.username,
+        content: this.content
+      }
+      this.$http.post('http://localhost:8081/blog/article/addComment', param, {
+        headers: {
+          'Content-Type': 'application/json;charset=UTF-8'
+        }
+      })
+        .then(res => {
+          if (res.body.code === 0) {
+            // 刷新评论列表
+            console.log('添加评论成功~')
+          }
+        }, err => {
+          console.log(err.body.message)
+        })
+    }
   }
 }
 </script>

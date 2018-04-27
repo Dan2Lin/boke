@@ -23,7 +23,7 @@
         </div>
         <div class="article-detail-footer">
           <like-componnet></like-componnet>
-          <comment-list></comment-list>
+          <comment-list :article-id = "articleId"></comment-list>
         </div>
       </div>
     </div>
@@ -42,7 +42,8 @@ export default {
   name: 'ArticleDetail',
   data () {
     return {
-      article: ''
+      article: '',
+      articleId: ''
     }
   },
   created: function () {
@@ -54,6 +55,7 @@ export default {
     }).then(response => {
       if (response.body.code === 0) {
         this.article = response.body.data.article
+        this.articleId = response.body.data.article.aId
       }
     }, res => {
       console.log('error')
