@@ -29,7 +29,7 @@ export default {
   },
   methods: {
     getTypeList () {
-      this.$http.get('http://118.24.20.254:8080/blog/articleType/getAllArticleType')
+      this.$http.get('/api/articleType/getAllArticleType')
         .then(response => {
           if (response.body.code === 0) {
             this.typeList = response.body.data.articleTypes

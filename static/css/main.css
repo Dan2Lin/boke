@@ -7509,7 +7509,8 @@ ul {
 }
 
 li {
-    line-height: 20px
+    line-height: 20px;
+    list-style:none;
 }
 
 form {

@@ -23,7 +23,7 @@
         </div>
         <div class="article-detail-footer">
           <like-componnet></like-componnet>
-          <comment-list :article-id = "articleId"></comment-list>
+          <comment-list  :article-id = "article.aId"></comment-list>
         </div>
       </div>
     </div>
@@ -42,24 +42,29 @@ export default {
   name: 'ArticleDetail',
   data () {
     return {
-      article: '',
-      articleId: ''
+      article: null
     }
   },
   created: function () {
     var newsID = this.$route.params.aId
-    this.$http.get('http://localhost:8081/blog/article/getArticleById/', {
-      params: {
-        aid: newsID
-      }
-    }).then(response => {
-      if (response.body.code === 0) {
-        this.article = response.body.data.article
-        this.articleId = response.body.data.article.aId
-      }
-    }, res => {
-      console.log('error')
-    })
+    this.getArticleById(newsID)
+  },
+  methods: {
+    getArticleById (newsID) {
+      this.$nextTick(function () {
+        this.$http.get('/api/article/getArticleById/', {
+          params: {
+            aid: newsID
+          }
+        }).then(response => {
+          if (response.body.code === 0) {
+            this.article = response.body.data.article
+          }
+        }, res => {
+          console.log('error')
+        })
+      })
+    }
   }
 }
 </script>
@@ -117,7 +122,6 @@ export default {
   }
   .show-content {
     color: #2f2f2f;
-    word-break: break-word!important;
     word-break: break-all;
     font-size: 16px;
     font-weight: 400;

@@ -12,7 +12,7 @@
               <span class="time">{{article.publishTime*1000 | formatDate}}</span>
             </div>
             </div>
-            <a class="title" :href = "'/getArticleById/'+ article.aId" target="_blank">{{article.title}}</a>
+            <a class="title" :href = "'/getArticleById/'+ article.aId">{{article.title}}</a>
             <p class="abstract" v-html="formatAbstract(article.content)">
             </p>
             <div class="meta">
@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     getArticleData () {
-      this.$http.get('http://localhost:8081/blog/article/getArticles').then(response => {
+      this.$http.get('/api/article/getArticles').then(response => {
         if (response.body.code === 0) {
           this.articleList = response.body.data.articles
         }

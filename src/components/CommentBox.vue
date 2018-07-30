@@ -16,8 +16,8 @@ export default {
   name: 'CommentBox',
   data () {
     return {
-      username: '',
-      content: ''
+      username: null,
+      content: null
     }
   },
   component: {
@@ -34,7 +34,7 @@ export default {
         name: this.username,
         content: this.content
       }
-      this.$http.post('http://localhost:8081/blog/article/addComment', param, {
+      this.$http.post('/api/article/addComment', param, {
         headers: {
           'Content-Type': 'application/json;charset=UTF-8'
         }
@@ -43,6 +43,9 @@ export default {
           if (res.body.code === 0) {
             // 刷新评论列表
             console.log('添加评论成功~')
+            this.$emit('add-comment', param)
+            this.username = null
+            this.content = null
           }
         }, err => {
           console.log(err.body.message)
@@ -53,7 +56,7 @@ export default {
 </script>
 
 <style scoped>
-  .comment-box-form{
+  .comment-box-form {
     width:620px;
   }
   form{
