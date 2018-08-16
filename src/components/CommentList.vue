@@ -30,6 +30,7 @@
                     <a class="">
                       <i class="iconfont ic-comment"></i>
                       <span>回复</span>
+                      <div>hidden domain</div>
                     </a>
                   </div>
                 </div>
@@ -73,7 +74,7 @@ export default {
       })
     },
     appendComment (item) {
-      this.commentList.push(item)
+      this.commentList.splice(0, 0, item)
     }
   }
 }

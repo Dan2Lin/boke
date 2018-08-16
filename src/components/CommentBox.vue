@@ -1,11 +1,16 @@
 <template>
   <div class="comment-box-form">
+    <div v-if="errors.length">
+      <ul>
+        <li class='error-msg' v-for="error in errors" v-bind:key="error">{{ error }}</li>
+      </ul>
+    </div>
     <form class="new-comment">
       <input type="text" class="comment-name" v-model="username" placeholder="你的名称（必填）"/>
       <textarea placeholder="写下你的神评论..." v-model= "content"></textarea>
       <div class="write-function-block">
         <a class="btn btn-send" v-on:click ="addComment">发送</a>
-        <a class="cancel">取消</a>
+        <a class="cancel" v-on:click="cancelComment">取消</a>
       </div>
     </form>
   </div>
@@ -16,6 +21,7 @@ export default {
   name: 'CommentBox',
   data () {
     return {
+      errors: [],
       username: null,
       content: null
     }
@@ -27,29 +33,41 @@ export default {
   props: ['articleId'],
   methods: {
     addComment: function () {
-      var param = {
-        aid: this.articleId,
-        cid: '11112',
-        parent_id: null,
-        name: this.username,
-        content: this.content
-      }
-      this.$http.post('/api/article/addComment', param, {
-        headers: {
-          'Content-Type': 'application/json;charset=UTF-8'
+      if (this.username && this.content) {
+        var param = {
+          aid: this.articleId,
+          cid: '',
+          parent_id: null,
+          name: this.username,
+          content: this.content
         }
-      })
-        .then(res => {
-          if (res.body.code === 0) {
-            // 刷新评论列表
-            console.log('添加评论成功~')
-            this.$emit('add-comment', param)
-            this.username = null
-            this.content = null
+        this.$http.post('/api/article/addComment', param, {
+          headers: {
+            'Content-Type': 'application/json;charset=UTF-8'
           }
-        }, err => {
-          console.log(err.body.message)
         })
+          .then(res => {
+            if (res.body.code === 0) {
+              // 刷新评论列表
+              this.$emit('add-comment', param)
+              this.username = null
+              this.content = null
+            }
+          }, err => {
+            console.log(err.body.message)
+          })
+      }
+      this.errors = []
+      if (!this.username) {
+        this.errors.push('用户名不能为空')
+      }
+      if (!this.content) {
+        this.errors.push('评论内容不能为空')
+      }
+    },
+    cancelComment: function () {
+      this.username = null
+      this.content = null
     }
   }
 }
@@ -58,6 +76,7 @@ export default {
 <style scoped>
   .comment-box-form {
     width:620px;
+    margin-top: 30px;
   }
   form{
     margin:0 0 20px;
@@ -103,5 +122,9 @@ export default {
     font-size:16px;
     color:#969696;
     margin:18px 30px 0 0;
+  }
+  .error-msg{
+    color: #f00;
+    font-size: 14px;
   }
 </style>

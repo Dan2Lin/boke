@@ -3,7 +3,7 @@
       <navbar></navbar>
       <div class="post">
         <div class="article">
-          <h1 class="title">{{article.title}}</h1>
+          <h1 class="title" v-if="article">{{article.title}}</h1>
           <div class="author">
             <a class="avatar" href="/u/9617ac822dc6">
               <img src="//upload.jianshu.io/users/upload_avatars/7523860/489033dd-a7d2-4ab0-88ab-a75fb884b8ef.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96" alt="96">
@@ -19,10 +19,9 @@
               <span class="views-count">阅读 3012</span><span class="comments-count">评论 181</span><span class="likes-count">喜欢 129</span><span class="rewards-count ">赞赏 5</span></div>
           </div>
           </div>
-          <div class="show-content" v-html="article.content"></div>
+          <div class="show-content" v-if="article" v-html="article.content"></div>
         </div>
         <div class="article-detail-footer">
-          <like-componnet></like-componnet>
           <comment-list  :article-id = "article.aId"></comment-list>
         </div>
       </div>
@@ -42,10 +41,10 @@ export default {
   name: 'ArticleDetail',
   data () {
     return {
-      article: null
+      article: ''
     }
   },
-  created: function () {
+  created () {
     var newsID = this.$route.params.aId
     this.getArticleById(newsID)
   },
