@@ -22,7 +22,7 @@
           <div class="show-content" v-if="article" v-html="article.content"></div>
         </div>
         <div class="article-detail-footer">
-          <comment-list  :article-id = "article.aId"></comment-list>
+          <comment-list  v-bind:article-id = "article.aId"></comment-list>
         </div>
       </div>
     </div>

@@ -48,12 +48,19 @@ import CommentBox from './CommentBox'
 export default {
   components: {CommentBox},
   name: 'CommentList',
+  props: ['articleId'],
   data () {
     return {
-      commentList: []
+      commentList: [],
+      aid: ''
     }
   },
-  props: ['articleId'],
+  watch: {
+    articleId: function (newVal, oldVal) {
+      this.aid = newVal
+      this.getAllCommentsById()
+    }
+  },
   component: {
     // someComponent
   },
@@ -62,7 +69,7 @@ export default {
   },
   methods: {
     getAllCommentsById: function () {
-      let articleId = this.articleId
+      let articleId = this.aid
       this.$http.get('/api/article/getCommentList', {
         params: {
           aid: articleId
