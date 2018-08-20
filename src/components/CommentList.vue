@@ -27,11 +27,13 @@
                 <div class="comment-wrap">
                   <p>{{comment.content}}</p>
                   <div class="tool-group">
-                    <a class="">
+                    <a class="" @click ="toggleCommentBox">
                       <i class="iconfont ic-comment"></i>
                       <span>回复</span>
-                      <div>hidden domain</div>
                     </a>
+                    <div v-show="showBox" class="sub-comment-box">
+                      <comment-box></comment-box>
+                    </div>
                   </div>
                 </div>
               </li>
@@ -52,7 +54,8 @@ export default {
   data () {
     return {
       commentList: [],
-      aid: ''
+      aid: '',
+      showBox: false
     }
   },
   watch: {
@@ -82,12 +85,20 @@ export default {
     },
     appendComment (item) {
       this.commentList.splice(0, 0, item)
+    },
+    toggleCommentBox () {
+      console.log('1234')
+      this.showBox = true
     }
+
   }
 }
 </script>
 
 <style scoped>
+  .hidden {
+    display: none;
+  }
   .comment-list{
     color:#333;
     font-size: 17px;
